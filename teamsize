@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Stats</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Character Stats</h1>
+    <form>
+        <label for="characterType">Select Character Type:</label>
+        <select id="characterType" name="characterType">
+            <option value="The Architect">The Architect</option>
+            <option value="The Celebrity">The Celebrity</option>
+            <option value="The Economist">The Economist</option>
+            <option value="The Explorer">The Explorer</option>
+            <option value="The General">The General</option>
+            <option value="The Hacker">The Hacker</option>
+            <option value="The Pacifist">The Pacifist</option>
+            <option value="The Politician">The Politician</option>
+            <option value="The Professional">The Professional</option>
+            <option value="The Scientist">The Scientist</option>
+            <option value="The Supervisor">The Supervisor</option>
+            <option value="The Trucker">The Trucker</option>
+        </select>
+
+        <label for="level">Level (1-30):</label>
+        <input type="number" id="level" name="level" min="1" max="30" required>
+
+        <label for="individualResearch">Individual Research (%):</label>
+        <input type="number" id="individualResearch" name="individualResearch" min="0" max="100" required>
+
+        <label for="techResearch">Tech Research (%):</label>
+        <input type="number" id="techResearch" name="techResearch" min="0" max="100" required>
+
+        <label for="pacifistBonus">Pacifist Bonus (%):</label>
+        <input type="number" id="pacifistBonus" name="pacifistBonus" min="0" max="100" required>
+
+        <label for="equipmentBonus">Equipment Bonus (%):</label>
+        <input type="number" id="equipmentBonus" name="equipmentBonus" min="0" max="100" required>
+
+        <label for="stars">Rarity (1-5): <small>(choose 5 for Platinum rarity, it has the same team size as 5-stars)</small></label>
+        <select id="stars" name="stars" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            var characterType = document.getElementById("characterType").value;
+            var level = parseInt(document.getElementById("level").value);
+            var stars = parseInt(document.getElementById("stars").value);
+
+            var individualResearchInput = document.getElementById("individualResearch").value;
+            var techResearchInput = document.getElementById("techResearch").value;
+            var pacifistBonusInput = document.getElementById("pacifistBonus").value;
+            var equipmentBonusInput = document.getElementById("equipmentBonus").value;
+
+            // Check if the inputs are not empty
+            var individualResearch = individualResearchInput !== "" ? parseFloat(individualResearchInput) : 0;
+            var techResearch = techResearchInput !== "" ? parseFloat(techResearchInput) : 0;
+            var pacifistBonus = pacifistBonusInput !== "" ? parseFloat(pacifistBonusInput) : 0;
+            var equipmentBonus = equipmentBonusInput !== "" ? parseFloat(equipmentBonusInput) : 0;
+
+            var table = {
+                "The Architect": [10, 11, 12, 13, 14],
+                "The Celebrity": [8, 9, 10, 11, 12],
+                "The Economist": [8, 9, 10, 11, 12],
+                "The Explorer": [12, 13, 14, 15, 16],
+                "The General": [11, 12, 13, 14, 15],
+                "The Hacker": [10, 11, 12, 13, 14],
+                "The Pacifist": [9, 10, 11, 12, 13],
+                "The Politician": [10, 11, 12, 13, 14],
+                "The Professional": [9, 10, 11, 12, 13],
+                "The Scientist": [10, 11, 12, 13, 14],
+                "The Supervisor": [10, 11, 12, 13, 14],
+                "The Trucker": [10, 11, 12, 13, 14],
+            };
+
+            if (table.hasOwnProperty(characterType)) {
+                var starsValue = table[characterType][stars - 1];
+
+                // Calculate team size based on the specified formula
+                var teamSize = starsValue * level * (1 + (individualResearch + techResearch + pacifistBonus + equipmentBonus) / 100);
+
+                alert(`Character Type: ${characterType}\nTeam Size: ${teamSize.toFixed(2)}`);
+            } else {
+                alert('Invalid character type selected.');
+            }
+        }
+    </script>
+</body>
+</html>
